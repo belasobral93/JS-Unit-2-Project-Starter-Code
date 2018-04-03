@@ -73,8 +73,9 @@ requirements:
 
 __Feed rules:__
 
-- When the application first loads display the loading container (see below on
-  instructions to toggle this). When you successfully retrieve information from
+-*DONE*- When the application first loads display the loading container (see below on
+  instructions to toggle this). 
+-*DONE*- When you successfully retrieve information from
   the default API hide the loader and replace the content of the `#main`
   container with that of the API. The DOM structure of each article must adhere
   to the `.article` structure.
@@ -84,27 +85,24 @@ __Feed rules:__
   information in the pop-up.
 - Change the link of the "Read more from source" button to that of the
   respective article.
-- When the user selects a source from the dropdown menu on the header, replace
+-*DONE*- When the user selects a source from the dropdown menu on the header, replace
   the content of the page with articles from the newly selected source. Display
   the loading pop up when the user first selects the new source, and hide it on
   success.
-- Add an error message (either alert or a notification on the page) if the app
+-*DONE*- Add an error message (either alert or a notification on the page) if the app
   cannot load from the selected feed.
-
-__Additional UI interaction rules:__
-
-- When the user clicks/taps the search icon, expand the input box. Best approach
+-*DONE*- When the user clicks/taps the search icon, expand the input box. Best approach
   for this is to toggle the `.active` class for the `#search` container. If the
   search input box is already expanded tapping the search icon again will close
   the input. Pressing the "Enter" key should also close the opened input box.
   _See Bonus 2 for search filtering functionality._
-- When the app is first loading and when the user selects to load a new feed
+-*DONE*- When the app is first loading and when the user selects to load a new feed
   from the dropdown, display the `#popUp` container with the `.loader` class.
   You can toggle the `.hidden` class from the container to display/hide the
   overlay container.
-- Add functionality to hide the pop-up when user selects the "X" button on the
+-*DONE*- Add functionality to hide the pop-up when user selects the "X" button on the
   pop-up.
-- Clicking/tapping the "Feedr" logo will display the main/default feed.
+-*DONE*- Clicking/tapping the "Feedr" logo will display the main/default feed.
 
 
 #### Bonus
@@ -120,15 +118,6 @@ __Additional UI interaction rules:__
 
 ---
 
-### Necessary Deliverables
-
-* A __working Feedr, built by you__, that can be run locally
-* A __new git repository hosted on Github__, where your codebase is maintained.
-  - Most of the your will be done on the __app.js__ file. You may update
-  the index.html and style.css files if you would like to further customize your
-  app.
-
----
 
 ### Getting Started
 

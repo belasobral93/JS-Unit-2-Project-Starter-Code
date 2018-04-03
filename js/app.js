@@ -1,58 +1,151 @@
-/*Pseudo Code */
+/*
+	Isabela Sobral
+	GA JS-SF-10
+*/
+
+const hackerNews = 'https://accesscontrolalloworiginall.herokuapp.com/http://hn.algolia.com/api/v1/search?hitsPerPage=4&tags=front_page'
+const guardianKey = '33b109ce-0fd0-4dd7-bf69-6dbbdde7e7a8';
+const guardian = "https://content.guardianapis.com/search?q=economy%20OR%20immigration%20business&tag=technology/technology&show-fields=all&from-date=2017-01-01&api-key=" + guardianKey; 
+const dailyWtf = "https://accesscontrolalloworiginall.herokuapp.com/http://thedailywtf.com/api/articles/recent";
 
 
--Remove .hidden from #popUp
--Fetch All Data from API
-On document.ready{
-	-ADD .hidden to #popUp
-	-ADD click event listener to News Source List Items{
-			
+$('#popUp').removeClass('hidden');
+
+//Hacker News Event Listener
+const sourceOne = $("ul li ").eq(1);
+$(sourceOne).on("click",function(){
+	event.preventDefault();
+	 $('#popUp').removeClass('hidden');
+	 master();
+});
+
+//Guardian Event Listener
+const sourceTwo = $("ul li ").eq(2);
+$(sourceTwo).on("click",function(){
+	event.preventDefault();
+	 $('#popUp').removeClass('hidden');
+	 pullGuardian();
+});
+
+//Daily WTF Event Listener
+const sourceThree = $("ul li ").eq(3);
+$(sourceThree).on("click",function(){
+	event.preventDefault();
+	 $('#popUp').removeClass('hidden');
+	 pullDailyWtf();
+});
+
+//Pull HackerNews --- also Homepage
+master();
+function master(){
+fetch(hackerNews).then(function(response){
+	if(response.ok){
+		return response.json();
 	}
+	//throw new Error('Not working, sorry');
+}).then(function(data){
+	console.log(data);
+	return showHackerNews(data);
+}).catch(function(){
+	alert("Can't load Hacker News, please try another source");
+})};
 
+//Pull Guardian 
+function pullGuardian(){
+	fetch(guardian).then(function(response){
+		if (response.ok){
+			return response.json();
+		}
+	}).then(function(data){
+		console.log(data);
+		return showGuardian(data);
+	}).catch(function(){
+		alert("Can't load the Guardian, please try another source");
+	})
 
+};
+
+//Pull Daily WTF 
+function pullDailyWtf(){
+	fetch(dailyWtf).then(function(response){
+		if (response.ok){
+			return response.json();
+		}
+	}).then(function(data){
+		console.log(data);
+		return showDailyWtf(data);
+	}).catch(function(){
+		alert("Can't load daily wtf, please try another source");
+	})
+
+};
+
+//Show HackerNews Articles 
+function showHackerNews(data){
+	var hackerData = Object.values(data.hits);
+	for (i in hackerData){
+		console.log(hackerData[i].title);
+		$("section.featuredImage img").eq(i).attr('src', 'images/hackerNewsLogo.png');
+		$( "section h3" ).eq(i).text(hackerData[i].title);
+		$("section h3").eq(i).attr('id', i);
+		$( "section h6" ).eq(i).text(hackerData[i]._tags[3]);
+		$( "section h6" ).eq(i).attr('id', i + '-h6');
+		$("section.impressions").eq(i).text(hackerData[i].num_comments);
+		$('#popUp').addClass('hidden');
+	}	
+}
+
+//Show Guardian Articles
+function showGuardian(data){
+	var guardian = Object.values(data.response.results);
+	console.log(guardian[0].webTitle);
+	 for (i in guardian){
+	 	$("section.featuredImage img").eq(i).attr('src', 'images/guardianLogo.png');
+	 	$( "section h3" ).eq(i).text(guardian[i].webTitle);
+	 	$( "section h6" ).eq(i).text(guardian[i].sectionName);
+		$("section.impressions").eq(i).text(guardian[i].fields.wordcount);
+	 	$('#popUp').addClass('hidden');
+	 }	
 }
 
 
-// - Start by adding all the DOM functionality first.
-// - Map out all of the needed fields/properties from each respective feed.
-// - Start by doing a console.log of the incoming feeds to confirm you have a
-//   successful transaction before you start mapping anything out.
-// - Make sure you have the [JSON View chrome extension](https://chrome.google.com/webstore/detail/jsonview/chklaanhfefbnpoihckbnefhakgolnmc?hl=en)
-//   to get a clean view of the JSON dump in your browser.
-// - Think about ways to best standardize all of your incoming data.
-// - Test small pieces of functionality frequently, to make sure everything is
-//   working.
-__Feed rules:__
+//Show Daily WTF Articles
+function showDailyWtf(data){
+	var dailywtf = Object.values(data);
+	 for (i in dailywtf){
+	 	$("section.featuredImage img").eq(i).attr('src', 'images/dailywtfLogo.png');
+	 	$( "section h3" ).eq(i).text(dailywtf[i].Title);
+	 	$( "section h6" ).eq(i).text(dailywtf[i].Series.Title);
+		$("section.impressions").eq(i).text(dailywtf[i].CachedCommentCount);
+	 	$('#popUp').addClass('hidden');
+	 }	
+}
 
-// - When the application first loads display the loading container (see below on
-//   instructions to toggle this). When you successfully retrieve information from
-//   the default API hide the loader and replace the content of the `#main`
-//   container with that of the API. The DOM structure of each article must adhere
-//   to the `.article` structure.
-// - When the user selects an article's title show the `#popUp` overlay. The
-//   content of the article must be inserted in the `.container` class inside
-//   `#popUp`. Make sure you remove the `.loader` class when toggling the article
-//   information in the pop-up.
-// - Change the link of the "Read more from source" button to that of the
-//   respective article.
-// - When the user selects a source from the dropdown menu on the header, replace
-//   the content of the page with articles from the newly selected source. Display
-//   the loading pop up when the user first selects the new source, and hide it on
-//   success.
-// - Add an error message (either alert or a notification on the page) if the app
-//   cannot load from the selected feed.
+//Show Pop Up and populate contents
+ $( "section.articleContent" ).on( "click", "h3", function(event) {
+     event.preventDefault();
+     $("#popUp").removeClass('loader hidden');
+     let id = $(this).attr('id');
+	 $("div.container h1").text($('#' +  id).text());;
+	 $("div.container p").text($('#'+ id + '-h6').text());
+ });
 
-// __Additional UI interaction rules:__
+//Close Pop Up
+$("a.closePopUp").on("click", function(event){
+	event.preventDefault();
+	$("#popUp").addClass("loader hidden");
+});
 
-// - When the user clicks/taps the search icon, expand the input box. Best approach
-//   for this is to toggle the `.active` class for the `#search` container. If the
-//   search input box is already expanded tapping the search icon again will close
-//   the input. Pressing the "Enter" key should also close the opened input box.
-//   _See Bonus 2 for search filtering functionality._
-// - When the app is first loading and when the user selects to load a new feed
-//   from the dropdown, display the `#popUp` container with the `.loader` class.
-//   You can toggle the `.hidden` class from the container to display/hide the
-//   overlay container.
-// - Add functionality to hide the pop-up when user selects the "X" button on the
-//   pop-up.
-// - Clicking/tapping the "Feedr" logo will display the main/default feed.
+//Click on Feedr to take you to homepage
+$("section.container h1").on("click",function(){
+	 event.preventDefault();
+	 $('#popUp').removeClass('hidden');
+	 master();
+});
+
+//toggle search bar
+$( "section#search a" ).click(function() {
+	const searchBar = $("section#search");
+  $(searchBar).toggleClass( "active" );
+});
+
