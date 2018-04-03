@@ -3,8 +3,8 @@
 	GA JS-SF-10
 */
 
-const hackerNews = 'https://accesscontrolalloworiginall.herokuapp.com/http://hn.algolia.com/api/v1/search?hitsPerPage=4&tags=front_page'
-const guardianKey = '33b109ce-0fd0-4dd7-bf69-6dbbdde7e7a8';
+const hackerNews = 'h'
+const guardianKey = '';
 const guardian = "https://content.guardianapis.com/search?q=economy%20OR%20immigration%20business&tag=technology/technology&show-fields=all&from-date=2017-01-01&api-key=" + guardianKey; 
 const dailyWtf = "https://accesscontrolalloworiginall.herokuapp.com/http://thedailywtf.com/api/articles/recent";
 
@@ -80,11 +80,12 @@ function pullDailyWtf(){
 
 };
 
+
+
 //Show HackerNews Articles 
 function showHackerNews(data){
 	var hackerData = Object.values(data.hits);
 	for (i in hackerData){
-		console.log(hackerData[i].title);
 		$("section.featuredImage img").eq(i).attr('src', 'images/hackerNewsLogo.png');
 		$( "section h3" ).eq(i).text(hackerData[i].title);
 		$("section h3").eq(i).attr('id', i);
@@ -95,10 +96,13 @@ function showHackerNews(data){
 	}	
 }
 
+
+
 //Show Guardian Articles
 function showGuardian(data){
 	var guardian = Object.values(data.response.results);
-	console.log(guardian[0].webTitle);
+	var guardianDesc = guardian[i].fields.standfirst;
+	$(guardianDesc).attr("id", i + "-body");
 	 for (i in guardian){
 	 	$("section.featuredImage img").eq(i).attr('src', 'images/guardianLogo.png');
 	 	$( "section h3" ).eq(i).text(guardian[i].webTitle);
@@ -127,7 +131,7 @@ function showDailyWtf(data){
      $("#popUp").removeClass('loader hidden');
      let id = $(this).attr('id');
 	 $("div.container h1").text($('#' +  id).text());;
-	 $("div.container p").text($('#'+ id + '-h6').text());
+	 $("div.container p").text($('#'+ ).text());
  });
 
 //Close Pop Up
